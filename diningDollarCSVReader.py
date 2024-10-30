@@ -49,8 +49,8 @@ class reader:
                 DH = simplifyDH(i["Description"])
                 self.diningHall.setdefault(DH, 0) 
                 self.diningHall[DH] += 1
-                self.days.setdefault(i["date"].split(" ")[0], 0)
-                self.days[i["date"].split(" ")[0]] += 1
+                self.days.setdefault(i["Date"].split(" ")[0], 0)
+                self.days[i["Date"].split(" ")[0]] += 1
     
     def average(self):
         """
