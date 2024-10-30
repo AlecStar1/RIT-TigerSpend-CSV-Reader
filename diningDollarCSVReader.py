@@ -38,6 +38,7 @@ class reader:
     file = None
     purchases = []
     diningHall = {}
+    days = {}
     
     def __init__(self, filename):
         assert filename[-3:].lower() == "csv"
@@ -48,6 +49,8 @@ class reader:
                 DH = simplifyDH(i["Description"])
                 self.diningHall.setdefault(DH, 0) 
                 self.diningHall[DH] += 1
+                self.days.setdefault(i["date"].split(" ")[0], 0)
+                self.days[i["date"].split(" ")[0]] += 1
     
     def average(self):
         """
@@ -76,8 +79,8 @@ class reader:
         biggest = min(self.purchases, key=lambda i: float(i["Amount"]))
         return [biggest["Amount"], simplifyDH(biggest["Description"]), biggest["Date"]]
 
-    # def BiggestAmountSpentOnADay(self):
-         
+    def BiggestAmountSpentOnADay(self):
+         return max(self.days.__iter__(), key=(lambda key: self.days[key]))
 
     def __len__(self):
         return len(self.purchases)
@@ -86,6 +89,7 @@ class reader:
         return f"""\t{len(self)} purchases with a average of {"{:.2f}".format(self.average())} per purchase.
         The biggest purchase was {self.biggestPurchase()[0]} from {self.biggestPurchase()[1]} on {self.biggestPurchase()[2]}.
         Most of those were from {self.averageDiningArea()} with {self.diningHall[self.averageDiningArea()]} purchases.
+        Most purchases were made on {self.BiggestAmountSpentOnADay()} with {self.days[self.BiggestAmountSpentOnADay()]} purchases.
         Out of all of the purchases, {self.onlineAmount()} were made with OnDemand.
         """
     
